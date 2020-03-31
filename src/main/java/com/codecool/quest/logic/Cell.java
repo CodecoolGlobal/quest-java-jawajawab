@@ -28,6 +28,7 @@ public class Cell implements Drawable {
     }
 
     public Actor getActor() {
+//        System.out.println(actor);    // just prints null every move
         return actor;
     }
 

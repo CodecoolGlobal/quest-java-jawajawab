@@ -14,9 +14,11 @@ public abstract class Actor implements Drawable {
 
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
-        cell.setActor(null);
-        nextCell.setActor(this);
-        cell = nextCell;
+        if (verifyValidMove(nextCell)) {
+            cell.setActor(null);
+            nextCell.setActor(this);
+            cell = nextCell;
+        }
     }
 
     public int getHealth() {
@@ -33,5 +35,14 @@ public abstract class Actor implements Drawable {
 
     public int getY() {
         return cell.getY();
+    }
+
+    public boolean verifyValidMove(Cell cell) {
+        if (cell.getTileName().equals("wall") || cell.getActor()!=null) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 }
