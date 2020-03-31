@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -15,13 +16,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.awt.*;
+
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
-    Canvas canvas = new Canvas(
+    static GameMap map = MapLoader.loadMap();
+    static Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    static Button button = new Button();
 
     public static void main(String[] args) {
         launch(args);
@@ -36,6 +40,14 @@ public class Main extends Application {
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
 
+
+        button.setText("Pick up Item");
+        button.setVisible(false);
+
+
+        ui.add(button, 2, 2);
+
+
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
@@ -45,7 +57,12 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         refresh();
         scene.setOnKeyPressed(this::onKeyPressed);
-
+        borderPane.requestFocus();
+        button.setOnMouseClicked(e -> {
+            handlePickup();
+            borderPane.requestFocus();
+            System.out.println("Merge");
+        });
         primaryStage.setTitle("Codecool Quest");
         primaryStage.show();
     }
@@ -57,6 +74,7 @@ public class Main extends Application {
                 refresh();
                 break;
             case DOWN:
+                System.out.println("Pressed down");
                 map.getPlayer().move(0, 1);
                 refresh();
                 break;
@@ -65,7 +83,7 @@ public class Main extends Application {
                 refresh();
                 break;
             case RIGHT:
-                map.getPlayer().move(1,0);
+                map.getPlayer().move(1, 0);
                 refresh();
                 break;
         }
@@ -79,15 +97,30 @@ public class Main extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
-                }
-                else if (cell.getItem() != null) {
+                } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
-                }
-                else {
+                } else {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
     }
+
+
+    public static void buttonVis() {
+        System.out.println("Button is " + button.isFocused());
+        button.setVisible(true);
+        System.out.println("Button is " + button.isFocused());
+    }
+
+    public static void buttonDisappear() {
+        button.setVisible(false);
+    }
+
+    public void handlePickup() {
+        map.getPlayer().getCell().setItem(null);
+        buttonDisappear();
+    }
+
 }
