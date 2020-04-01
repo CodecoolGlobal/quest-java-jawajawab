@@ -52,7 +52,7 @@ public abstract class Actor implements Drawable {
     }
 
     public boolean verifyValidMove(Cell cell) {
-        if (cell.getTileName().equals("wall") || cell.getActor() != null) {
+        if (cell.getTileName().equals("wall") || cell.getActor() != null || (cell.getItem()!=null && cell.getItem().getTileName().equals("door"))) {
             return false;
         } else {
             return true;
