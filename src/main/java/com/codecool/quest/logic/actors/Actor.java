@@ -29,7 +29,7 @@ public abstract class Actor implements Drawable {
                 }
             }
             else {
-                Main.encounter((Player) this.getCell().getActor(), (Skeleton) nextCell.getActor());
+                Main.encounter(this.getCell(), nextCell);
             }
         }
         if (verifyItem(cell)) {

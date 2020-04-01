@@ -1,5 +1,7 @@
 package com.codecool.quest.logic;
 
+import com.codecool.quest.logic.actors.Ghost;
+import com.codecool.quest.logic.actors.Giant;
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
 import com.codecool.quest.logic.items.Door;
@@ -14,6 +16,8 @@ public class GameMap {
 
     private Player player;
     private Skeleton skeleton;
+    private Ghost ghost;
+    private Giant giant;
     private Sword sword;
     private Heart heart;
     private DoorKey doorKey;
@@ -40,6 +44,14 @@ public class GameMap {
 
     public void setSkeleton(Skeleton skeleton) {
         this.skeleton = skeleton;
+    }
+
+    public void setGhost(Ghost ghost) {
+        this.ghost = ghost;
+    }
+
+    public void setGiant(Giant giant) {
+        this.giant = giant;
     }
 
     public void setSword(Sword sword) {

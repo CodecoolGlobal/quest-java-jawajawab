@@ -3,6 +3,8 @@ package com.codecool.quest;
 import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
+import com.codecool.quest.logic.actors.Ghost;
+import com.codecool.quest.logic.actors.Giant;
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
 import javafx.application.Application;
@@ -29,7 +31,7 @@ public class Main extends Application {
     Label attackLabel = new Label();
 //    TableView inventoryDisplayTable = new TableView();
     ListView<String> inventoryItems = new ListView<>();
-   static Label itemName = new Label();
+    static Label itemName = new Label();
     static Button button = new Button();
 
     public static void main(String[] args) {
@@ -163,22 +165,44 @@ public class Main extends Application {
                 break;
         }
         map.getPlayer().addToPlayerInventory(item, 1);
-
         map.getPlayer().getCell().setItem(null);
         System.out.println(map.getPlayer().printPlayerInventory());
         inventoryItems.setItems(map.getPlayer().printPlayerInventory());
-
         inventoryItems.getSelectionModel().clearSelection();
         buttonDisappear();
     }
 
-    public static void encounter(Player attacker, Skeleton defender) {
-        System.out.println("Encounter " + attacker.damage + " " + defender.damage);
-        defender.modifyHealth(attacker.damage);
-        attacker.modifyHealth(defender.damage);
-        System.out.println("defender health: " + defender.getHealth() + " and attacker health : " + attacker.getHealth());
-        if (defender.getHealth() <= 0) {
-            defender.getCell().setActor(null);
+    public static void encounter(Cell cell, Cell nextCell) {
+        Player attacker = (Player) cell.getActor();
+        if (nextCell.getActor().getTileName().equals("skeleton")) {
+            Skeleton defender = (Skeleton) nextCell.getActor();
+            System.out.println("Encounter " + attacker.damage + " " + defender.damage);
+            defender.modifyHealth(attacker.damage);
+            attacker.modifyHealth(defender.damage);
+            System.out.println("defender health: " + defender.getHealth() + " and attacker health : " + attacker.getHealth());
+            if (defender.getHealth() <= 0) {
+                defender.getCell().setActor(null);
+            }
+        }
+        else if (nextCell.getActor().getTileName().equals("ghost")) {
+            Ghost defender = (Ghost) nextCell.getActor();
+            System.out.println("Encounter " + attacker.damage + " " + defender.damage);
+            defender.modifyHealth(attacker.damage);
+            attacker.modifyHealth(defender.damage);
+            System.out.println("defender health: " + defender.getHealth() + " and attacker health : " + attacker.getHealth());
+            if (defender.getHealth() <= 0) {
+                defender.getCell().setActor(null);
+            }
+        }
+        else if (nextCell.getActor().getTileName().equals("giant")) {
+            Giant defender = (Giant) nextCell.getActor();
+            System.out.println("Encounter " + attacker.damage + " " + defender.damage);
+            defender.modifyHealth(attacker.damage);
+            attacker.modifyHealth(defender.damage);
+            System.out.println("defender health: " + defender.getHealth() + " and attacker health : " + attacker.getHealth());
+            if (defender.getHealth() <= 0) {
+                defender.getCell().setActor(null);
+            }
         }
     }
 
