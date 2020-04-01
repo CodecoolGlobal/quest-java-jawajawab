@@ -25,6 +25,7 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    Label attackLabel = new Label();
    static Label itemName = new Label();
     static Button button = new Button();
 
@@ -41,13 +42,15 @@ public class Main extends Application {
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
 
+        ui.add(new Label("Attack: "), 0, 1);
+        ui.add(attackLabel, 1, 1);
 
         button.setText("Pick up Item");
         button.setVisible(false);
 
 
-        ui.add(button, 1, 2);
-        ui.add(itemName, 0, 2);
+        ui.add(button, 1, 3);
+        ui.add(itemName, 0, 3);
 
 
         BorderPane borderPane = new BorderPane();
@@ -62,6 +65,7 @@ public class Main extends Application {
         borderPane.requestFocus();
         button.setOnMouseClicked(e -> {
             handlePickup();
+            refresh();
             borderPane.requestFocus();
             System.out.println("Merge");
         });
@@ -107,6 +111,7 @@ public class Main extends Application {
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
+        attackLabel.setText(""+ map.getPlayer().getAttackDamage());
 
 
     }
@@ -114,7 +119,8 @@ public class Main extends Application {
 
     public static void buttonVis() {
         System.out.println("Button is " + button.isFocused());
-        itemName.setText(map.getPlayer().getCell().getItem().getTileName());
+        String item = map.getPlayer().getCell().getItem().getTileName();
+        itemName.setText(item);
         button.setVisible(true);
         System.out.println("Button is " + button.isFocused());
     }
@@ -126,6 +132,17 @@ public class Main extends Application {
 
     public void handlePickup() {
         itemName.setText("");
+        String item = map.getPlayer().getCell().getItem().getTileName();
+        switch(item) {
+            case "heart":
+                map.getPlayer().setHealth(5);
+                break;
+            case "sword":
+                map.getPlayer().setAttackDamage(4);
+                break;
+            default:
+                break;
+        }
         map.getPlayer().getCell().setItem(null);
         buttonDisappear();
     }
