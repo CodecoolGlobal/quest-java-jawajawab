@@ -1,14 +1,12 @@
 package com.codecool.quest.logic.actors;
 
+import com.codecool.quest.Main;
 import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.Drawable;
-import com.codecool.quest.Main;
-import javafx.scene.control.Button;
 
 public abstract class Actor implements Drawable {
     private Cell cell;
     private int health = 10;
-
 
     public Actor(Cell cell) {
         this.cell = cell;
@@ -16,20 +14,20 @@ public abstract class Actor implements Drawable {
     }
 
     public void move(int dx, int dy) {
-//        System.out.println("Enter a new move");
         Cell nextCell = cell.getNeighbor(dx, dy);
         if (verifyValidMove(nextCell)) {
-
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
+        }
+        else {
+            Main.encounter((Player) this.getCell().getActor(), (Skeleton) nextCell.getActor());
         }
         if (verifyItem(cell)) {
             Main.buttonVis();
         } else {
             Main.buttonDisappear();
         }
-
 
     }
 
@@ -70,4 +68,6 @@ public abstract class Actor implements Drawable {
             return false;
         }
     }
+
+
 }

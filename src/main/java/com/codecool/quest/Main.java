@@ -3,6 +3,8 @@ package com.codecool.quest;
 import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
+import com.codecool.quest.logic.actors.Player;
+import com.codecool.quest.logic.actors.Skeleton;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -17,8 +19,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.awt.*;
 
 public class Main extends Application {
     static GameMap map = MapLoader.loadMap();
@@ -57,26 +57,6 @@ public class Main extends Application {
         ui.add(itemName, 0, 3);
 
         ui.add(new Label("Inventory"), 0, 6);
-
-
-//        TableColumn nameColumn = new TableColumn("Name");
-//        TableColumn countColumn = new TableColumn("Count");
-//
-//
-//        nameColumn.setReorderable(false);
-//        nameColumn.setResizable(false);
-//        nameColumn.setSortable(false);
-//
-//        countColumn.setReorderable(false);
-//        countColumn.setResizable(false);
-//        countColumn.setSortable(false);
-//
-//        inventoryDisplayTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-//        inventoryDisplayTable.getColumns().addAll(nameColumn, countColumn);
-//        inventoryDisplayTable.setEditable(false);
-//        Label tablePlaceholder = new Label("Inventory is empty");
-//        inventoryDisplayTable.setPlaceholder(tablePlaceholder);
-//
 
         String css= "-fx-border-width: 2px; -fx-border-color: lightgrey; -fx-border-radius: 3px; -fx-max-width: 95px;";
         inventoryItems.setStyle(css);
@@ -145,8 +125,10 @@ public class Main extends Application {
             }
 
         }
-        healthLabel.setText("" + map.getPlayer().getHealth());
-        attackLabel.setText(""+ map.getPlayer().getAttackDamage());
+
+        healthLabel.setText("" + map.getPlayer().health);
+        itemName.setText(map.getPlayer().getCell().getTileName());
+//         attackLabel.setText(""+ map.getPlayer().getAttackDamage());
         inventoryItems.getSelectionModel().clearSelection();
 
 
@@ -185,6 +167,16 @@ public class Main extends Application {
 
         inventoryItems.getSelectionModel().clearSelection();
         buttonDisappear();
+    }
+
+    public static void encounter(Player attacker, Skeleton defender) {
+        System.out.println("Encounter " + attacker.damage + " " + defender.damage);
+        defender.modifyHealth(attacker.damage);
+        attacker.modifyHealth(defender.damage);
+        System.out.println("defender health: " + defender.getHealth() + " and attacker health : " + attacker.getHealth());
+        if (defender.getHealth() <= 0) {
+            defender.getCell().setActor(null);
+        }
     }
 
 }
