@@ -35,6 +35,10 @@ public abstract class Actor implements Drawable {
         return health;
     }
 
+    public void setHealth(int health) {
+        this.health += health;
+    }
+
     public Cell getCell() {
         return cell;
     }
@@ -48,21 +52,19 @@ public abstract class Actor implements Drawable {
     }
 
     public boolean verifyValidMove(Cell cell) {
-        if (cell.getTileName().equals("wall") || cell.getActor()!=null) {
+        if (cell.getTileName().equals("wall") || cell.getActor() != null) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
 
     public boolean verifyItem(Cell cell) {
         if (cell.getItem() != null) {
-            System.out.println("Is item");
+
             return true;
-        }
-        else {
-            System.out.println("Is not item");
+        } else {
+
             return false;
         }
     }
