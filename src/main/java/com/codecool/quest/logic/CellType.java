@@ -13,7 +13,11 @@ public enum CellType {
     CHARE("charE"),
     CHARO("charO"),
     CHARV("charV"),
-    CHARR("charR");
+    CHARR("charR"),
+    CHART("charT"),
+    CHARC("charC"),
+    CHARL("charL"),
+    CHARS("charS");
 
     private final String tileName;
 

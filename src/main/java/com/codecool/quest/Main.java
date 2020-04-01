@@ -233,4 +233,27 @@ public class Main extends Application {
         cell = map.getCell(15, 11);
         cell.setType(CellType.CHARR);
     }
+
+    public static void displayStageClear() {
+        Cell cell = map.getCell(11, 10);
+        cell.setType(CellType.CHARS);
+        cell = map.getCell(12, 10);
+        cell.setType(CellType.CHART);
+        cell = map.getCell(13, 10);
+        cell.setType(CellType.CHARA);
+        cell = map.getCell(14, 10);
+        cell.setType(CellType.CHARG);
+        cell = map.getCell(15, 10);
+        cell.setType(CellType.CHARE);
+        cell = map.getCell(11, 11);
+        cell.setType(CellType.CHARC);
+        cell = map.getCell(12, 11);
+        cell.setType(CellType.CHARL);
+        cell = map.getCell(13, 11);
+        cell.setType(CellType.CHARE);
+        cell = map.getCell(14, 11);
+        cell.setType(CellType.CHARA);
+        cell = map.getCell(15, 11);
+        cell.setType(CellType.CHARR);
+    }
 }

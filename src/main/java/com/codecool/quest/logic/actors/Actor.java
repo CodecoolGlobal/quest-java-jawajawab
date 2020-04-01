@@ -28,10 +28,11 @@ public abstract class Actor implements Drawable {
                     nextCell.setItem(null);
                 }
             }
-            if (nextCell.getItem()!=null && nextCell.getItem().getTileName().equals("blueDoor")) {
+            else if (nextCell.getItem()!=null && nextCell.getItem().getTileName().equals("blueDoor")) {
                 if (Player.openBlueDoor()) {
                     nextCell.setType(CellType.OPENBLUEDOOR);
                     nextCell.setItem(null);
+                    Main.displayStageClear();
                 }
             }
             else {
