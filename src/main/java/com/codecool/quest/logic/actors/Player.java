@@ -2,17 +2,19 @@ package com.codecool.quest.logic.actors;
 
 import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.actors.Actor;
+import com.codecool.quest.logic.items.Item;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.LinkedHashMap;
+import javax.swing.text.html.ListView;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Player extends Actor {
 
     private int attackDamage = 1;
-    private ObservableMap<String, Integer> playerInventory = FXCollections.observableHashMap();
+    private LinkedHashMap<String, Integer> playerInventory = new LinkedHashMap<>();
 
     public Player(Cell cell) {
         super(cell);
@@ -40,12 +42,19 @@ public class Player extends Actor {
 
     }
 
-    public String printPlayerInventory() {
+    public ObservableList<String> printPlayerInventory() {
 
-        return playerInventory.toString();
+        Iterator it = playerInventory.entrySet().iterator();
+        ObservableList<String> observableInventory = FXCollections.observableArrayList();
+        while(it.hasNext()) {
+            String itemAndCount = it.next().toString().replace("=", " ");
+            observableInventory.add(itemAndCount);
+        }
+        return observableInventory;
     }
 
-    public ObservableMap<String, Integer> getPlayerInventory() {
+
+    public LinkedHashMap<String, Integer> getPlayerInventory() {
         return playerInventory;
     }
 }

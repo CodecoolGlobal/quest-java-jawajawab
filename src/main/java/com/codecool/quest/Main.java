@@ -9,10 +9,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -29,7 +28,8 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label attackLabel = new Label();
-    TableView inventoryDisplayTable = new TableView();
+//    TableView inventoryDisplayTable = new TableView();
+    ListView<String> inventoryItems = new ListView<>();
    static Label itemName = new Label();
     static Button button = new Button();
 
@@ -59,26 +59,27 @@ public class Main extends Application {
         ui.add(new Label("Inventory"), 0, 6);
 
 
-        TableColumn nameColumn = new TableColumn("Name");
-        TableColumn countColumn = new TableColumn("Count");
+//        TableColumn nameColumn = new TableColumn("Name");
+//        TableColumn countColumn = new TableColumn("Count");
+//
+//
+//        nameColumn.setReorderable(false);
+//        nameColumn.setResizable(false);
+//        nameColumn.setSortable(false);
+//
+//        countColumn.setReorderable(false);
+//        countColumn.setResizable(false);
+//        countColumn.setSortable(false);
+//
+//        inventoryDisplayTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+//        inventoryDisplayTable.getColumns().addAll(nameColumn, countColumn);
+//        inventoryDisplayTable.setEditable(false);
+//        Label tablePlaceholder = new Label("Inventory is empty");
+//        inventoryDisplayTable.setPlaceholder(tablePlaceholder);
+//
+//
 
-
-        nameColumn.setReorderable(false);
-        nameColumn.setResizable(false);
-        nameColumn.setSortable(false);
-
-        countColumn.setReorderable(false);
-        countColumn.setResizable(false);
-        countColumn.setSortable(false);
-
-        inventoryDisplayTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        inventoryDisplayTable.getColumns().addAll(nameColumn, countColumn);
-        inventoryDisplayTable.setEditable(false);
-        Label tablePlaceholder = new Label("Inventory is empty");
-        inventoryDisplayTable.setPlaceholder(tablePlaceholder);
-
-
-        ui.add(inventoryDisplayTable, 0,8);
+        ui.add(inventoryItems, 0,8);
 
         BorderPane borderPane = new BorderPane();
 
@@ -96,7 +97,8 @@ public class Main extends Application {
             borderPane.requestFocus();
             System.out.println("Merge");
         });
-        inventoryDisplayTable.setOnMouseClicked(  e -> {
+
+        inventoryItems.setOnMouseClicked(e -> {
             borderPane.requestFocus();
         });
         primaryStage.setTitle("Codecool Quest");
@@ -174,6 +176,7 @@ public class Main extends Application {
         map.getPlayer().addToPlayerInventory(item, 1);
         map.getPlayer().getCell().setItem(null);
         System.out.println(map.getPlayer().printPlayerInventory());
+        inventoryItems.setItems(map.getPlayer().printPlayerInventory());
         buttonDisappear();
     }
 
