@@ -6,6 +6,7 @@ public class Ghost extends Actor {
     public int damage = 3;
     public int health = 10;
 
+
     public Ghost(Cell cell) {
         super(cell);
 
@@ -26,16 +27,7 @@ public class Ghost extends Actor {
     }
 
     public void roam() {
-        System.out.println("tttttererererere");
-//        Cell cell = this.getCell();
-//        int dx = getX()+1;
-//        int dy = getY()+1;
-//        Cell nextCell = cell.getNeighbor(dx, dy);
-//        if (verifyValidMove(nextCell)) {
-//            cell.setActor(null);
-//            nextCell.setActor(this);
-////            cell = nextCell;
-//        }
+        System.out.println("ghost roaming");
     }
 
 

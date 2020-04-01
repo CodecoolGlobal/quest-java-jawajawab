@@ -4,10 +4,7 @@ import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.CellType;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
-import com.codecool.quest.logic.actors.Ghost;
-import com.codecool.quest.logic.actors.Giant;
-import com.codecool.quest.logic.actors.Player;
-import com.codecool.quest.logic.actors.Skeleton;
+import com.codecool.quest.logic.actors.*;
 import com.codecool.quest.logic.items.BlueDoorKey;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -22,6 +19,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Main extends Application {
     static GameMap map = MapLoader.loadMap();
@@ -113,15 +114,13 @@ public class Main extends Application {
     }
 
     private void refresh() {
+
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
-                    if (cell.getActor().getTileName().equals("skeleton")) {
-                        ((Skeleton) cell.getActor()).roam();
-                    }
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
@@ -130,7 +129,14 @@ public class Main extends Application {
                 }
             }
         }
-
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = 0; y < map.getHeight(); y++) {
+                Cell cell = map.getCell(x, y);
+                if (cell.getActor() != null) {
+                    moveMonsters(cell, cell.getActor().getTileName());
+                }
+            }
+        }
         healthLabel.setText("" + map.getPlayer().health);
 //        itemName.setText(map.getPlayer().getCell().getTileName());
         attackLabel.setText(""+ map.getPlayer().damage);
@@ -256,4 +262,68 @@ public class Main extends Application {
         cell = map.getCell(15, 11);
         cell.setType(CellType.CHARR);
     }
+
+    public void moveMonsters(Cell cell, String monster) {
+        System.out.println("move monsters started ");
+        List<Integer> randomChoice = new ArrayList<>();
+        randomChoice.add(-1);
+        randomChoice.add(0);
+        randomChoice.add(1);
+        Random r = new Random();
+        int dx = randomChoice.get(r.nextInt(randomChoice.size()));
+        int dy = randomChoice.get(r.nextInt(randomChoice.size()));;
+
+        if (monster.equals("skeleton")) {
+
+            Cell nextCell = cell.getNeighbor(dx, dy);
+            if (Actor.verifyValidMove(nextCell)) {
+                Skeleton mover = (Skeleton) cell.getActor();
+                cell.setActor(null);
+                nextCell.setActor(mover);
+            }
+            else if (nextCell.getActor().getTileName().equals("player")) {
+                encounterMonsterAttacking(cell, nextCell);
+            }
+        }
+        else if (monster.equals("ghost")) {
+            Cell nextCell = cell.getNeighbor(dx, dy);
+            if (Actor.verifyValidMove(nextCell)) {
+                Ghost mover = (Ghost) cell.getActor();
+                cell.setActor(null);
+                nextCell.setActor(mover);
+            }
+        }
+
+    }
+
+    public void encounterMonsterAttacking(Cell cell, Cell nextCell) {
+        if (cell.getActor().getTileName().equals("skeleton")) {
+            Skeleton attacker = (Skeleton) nextCell.getActor();
+            Player defender = (Player) nextCell.getActor();
+            defender.modifyHealth(attacker.damage);
+            if (defender.getHealth() <= 0) {
+                attacker.getCell().setType(CellType.GRAVE);
+                attacker.getCell().setActor(null);
+                displayGameOver();
+            } else attacker.modifyHealth(defender.damage);
+            if (attacker.getHealth() <= 0) {
+                defender.getCell().setActor(null);
+            }
+        }
+        else if (cell.getActor().getTileName().equals("ghost")) {
+            Ghost attacker = (Ghost) nextCell.getActor();
+            Player defender = (Player) nextCell.getActor();
+            defender.modifyHealth(attacker.damage);
+            if (defender.getHealth() <= 0) {
+                attacker.getCell().setType(CellType.GRAVE);
+                attacker.getCell().setActor(null);
+                displayGameOver();
+            } else attacker.modifyHealth(defender.damage);
+            if (attacker.getHealth() <= 0) {
+                defender.getCell().setActor(null);
+            }
+        }
+    }
+
+
 }
