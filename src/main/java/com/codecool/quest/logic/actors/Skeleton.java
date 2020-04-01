@@ -1,15 +1,30 @@
 package com.codecool.quest.logic.actors;
 
 import com.codecool.quest.logic.Cell;
-import com.codecool.quest.logic.actors.Actor;
 
 public class Skeleton extends Actor {
+    public int damage = 2;
+    public int health = 10;
+
     public Skeleton(Cell cell) {
         super(cell);
+
     }
+
+
 
     @Override
     public String getTileName() {
         return "skeleton";
     }
+
+    public void modifyHealth(int modifier) {
+        this.health -= modifier;
+        System.out.println(this.health);
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
 }

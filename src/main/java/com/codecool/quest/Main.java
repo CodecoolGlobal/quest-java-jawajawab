@@ -3,6 +3,8 @@ package com.codecool.quest;
 import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
+import com.codecool.quest.logic.actors.Player;
+import com.codecool.quest.logic.actors.Skeleton;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -15,8 +17,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.awt.*;
 
 public class Main extends Application {
     static GameMap map = MapLoader.loadMap();
@@ -106,7 +106,7 @@ public class Main extends Application {
                 }
             }
         }
-        healthLabel.setText("" + map.getPlayer().getHealth());
+        healthLabel.setText("" + map.getPlayer().health);
         itemName.setText(map.getPlayer().getCell().getTileName());
 
     }
@@ -126,6 +126,16 @@ public class Main extends Application {
         itemName.setText("");
         map.getPlayer().getCell().setItem(null);
         buttonDisappear();
+    }
+
+    public static void encounter(Player attacker, Skeleton defender) {
+        System.out.println("Encounter " + attacker.damage + " " + defender.damage);
+        defender.modifyHealth(attacker.damage);
+        attacker.modifyHealth(defender.damage);
+        System.out.println("defender health: " + defender.getHealth() + " and attacker health : " + attacker.getHealth());
+        if (defender.getHealth() <= 0) {
+            defender.getCell().setActor(null);
+        }
     }
 
 }
