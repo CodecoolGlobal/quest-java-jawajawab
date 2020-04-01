@@ -1,22 +1,17 @@
 package com.codecool.quest.logic.actors;
 
 import com.codecool.quest.logic.Cell;
-
-import com.codecool.quest.logic.actors.Actor;
-import com.codecool.quest.logic.items.Item;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 
-import javax.swing.text.html.ListView;
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 public class Player extends Actor {
     public int damage = 5;
     public int health = 10;
     public Cell cell;
-    private LinkedHashMap<String, Integer> playerInventory = new LinkedHashMap<>();
+    private static LinkedHashMap<String, Integer> playerInventory = new LinkedHashMap<>();
 
 
     public Player(Cell cell) {
@@ -62,6 +57,11 @@ public class Player extends Actor {
 
     public LinkedHashMap<String, Integer> getPlayerInventory() {
         return playerInventory;
+    }
+
+    public static boolean openDoor() {
+        if (playerInventory.containsKey("doorKey")) return true;
+        else return false;
     }
 
 }

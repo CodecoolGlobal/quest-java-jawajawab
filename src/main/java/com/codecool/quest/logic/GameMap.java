@@ -2,6 +2,7 @@ package com.codecool.quest.logic;
 
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
+import com.codecool.quest.logic.items.Door;
 import com.codecool.quest.logic.items.DoorKey;
 import com.codecool.quest.logic.items.Heart;
 import com.codecool.quest.logic.items.Sword;
@@ -16,6 +17,7 @@ public class GameMap {
     private Sword sword;
     private Heart heart;
     private DoorKey doorKey;
+    private Door door;
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -50,6 +52,10 @@ public class GameMap {
 
     public void setDoorKey(DoorKey doorKey) {
         this.doorKey = doorKey;
+    }
+
+    public void setDoor(Door door) {
+        this.door = door;
     }
 
     public Player getPlayer() {

@@ -6,14 +6,13 @@ import com.codecool.quest.logic.MapLoader;
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -127,7 +126,7 @@ public class Main extends Application {
         }
 
         healthLabel.setText("" + map.getPlayer().health);
-        itemName.setText(map.getPlayer().getCell().getTileName());
+//        itemName.setText(map.getPlayer().getCell().getTileName());
 //         attackLabel.setText(""+ map.getPlayer().getAttackDamage());
         inventoryItems.getSelectionModel().clearSelection();
 
@@ -154,7 +153,7 @@ public class Main extends Application {
                 map.getPlayer().setHealth(5);
                 break;
             case "sword":
-                map.getPlayer().setAttackDamage(4);
+//                map.getPlayer().setAttackDamage(4);
                 break;
             default:
                 break;

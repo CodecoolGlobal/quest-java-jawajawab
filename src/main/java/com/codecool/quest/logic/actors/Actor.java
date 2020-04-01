@@ -2,6 +2,7 @@ package com.codecool.quest.logic.actors;
 
 import com.codecool.quest.Main;
 import com.codecool.quest.logic.Cell;
+import com.codecool.quest.logic.CellType;
 import com.codecool.quest.logic.Drawable;
 
 public abstract class Actor implements Drawable {
@@ -21,7 +22,15 @@ public abstract class Actor implements Drawable {
             cell = nextCell;
         }
         else {
-            Main.encounter((Player) this.getCell().getActor(), (Skeleton) nextCell.getActor());
+            if (nextCell.getItem()!=null && nextCell.getItem().getTileName().equals("door")) {
+                if (Player.openDoor()) {
+                    nextCell.setType(CellType.OPENDOOR);
+                    nextCell.setItem(null);
+                }
+            }
+            else {
+                Main.encounter((Player) this.getCell().getActor(), (Skeleton) nextCell.getActor());
+            }
         }
         if (verifyItem(cell)) {
             Main.buttonVis();
@@ -52,7 +61,7 @@ public abstract class Actor implements Drawable {
     }
 
     public boolean verifyValidMove(Cell cell) {
-        if (cell.getTileName().equals("wall") || cell.getActor() != null) {
+        if (cell.getTileName().equals("wall") || cell.getActor() != null || (cell.getItem()!=null && cell.getItem().getTileName().equals("door"))) {
             return false;
         } else {
             return true;
