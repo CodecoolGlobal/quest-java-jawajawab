@@ -47,7 +47,7 @@ public class Player extends Actor {
         Iterator it = playerInventory.entrySet().iterator();
         ObservableList<String> observableInventory = FXCollections.observableArrayList();
         while(it.hasNext()) {
-            String itemAndCount = it.next().toString().replace("=", " ");
+            String itemAndCount = it.next().toString().replace("=", " X");
             observableInventory.add(itemAndCount);
         }
         return observableInventory;

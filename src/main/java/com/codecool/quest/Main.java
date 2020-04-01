@@ -49,7 +49,7 @@ public class Main extends Application {
         ui.add(new Label("Attack: "), 0, 1);
         ui.add(attackLabel, 1, 1);
 
-        button.setText("Pick up Item");
+        button.setText("Pick Item");
         button.setVisible(false);
 
 
@@ -77,9 +77,11 @@ public class Main extends Application {
 //        Label tablePlaceholder = new Label("Inventory is empty");
 //        inventoryDisplayTable.setPlaceholder(tablePlaceholder);
 //
-//
 
-        ui.add(inventoryItems, 0,8);
+        String css= "-fx-border-width: 2px; -fx-border-color: lightgrey; -fx-border-radius: 3px; -fx-max-width: 95px;";
+        inventoryItems.setStyle(css);
+
+        ui.add(inventoryItems, 0,20);
 
         BorderPane borderPane = new BorderPane();
 
@@ -99,6 +101,7 @@ public class Main extends Application {
         });
 
         inventoryItems.setOnMouseClicked(e -> {
+            inventoryItems.getSelectionModel().clearSelection();
             borderPane.requestFocus();
         });
         primaryStage.setTitle("Codecool Quest");
@@ -144,6 +147,7 @@ public class Main extends Application {
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
         attackLabel.setText(""+ map.getPlayer().getAttackDamage());
+        inventoryItems.getSelectionModel().clearSelection();
 
 
     }
@@ -174,9 +178,12 @@ public class Main extends Application {
                 break;
         }
         map.getPlayer().addToPlayerInventory(item, 1);
+
         map.getPlayer().getCell().setItem(null);
         System.out.println(map.getPlayer().printPlayerInventory());
         inventoryItems.setItems(map.getPlayer().printPlayerInventory());
+
+        inventoryItems.getSelectionModel().clearSelection();
         buttonDisappear();
     }
 
