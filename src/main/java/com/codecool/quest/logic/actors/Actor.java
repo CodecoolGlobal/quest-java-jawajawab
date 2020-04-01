@@ -16,7 +16,7 @@ public abstract class Actor implements Drawable {
     }
 
     public void move(int dx, int dy) {
-        System.out.println("Enter a new move");
+//        System.out.println("Enter a new move");
         Cell nextCell = cell.getNeighbor(dx, dy);
         if (verifyValidMove(nextCell)) {
 
@@ -25,23 +25,20 @@ public abstract class Actor implements Drawable {
             cell = nextCell;
         }
         if (verifyItem(cell)) {
-//            cell.setItem(null);
-
             Main.buttonVis();
-            System.out.println("Button displayed");
-//            cell.setActor(null);
-//            nextCell.setActor(this);
-//            cell = nextCell;
         } else {
             Main.buttonDisappear();
         }
-        System.out.println("After if");
 
 
     }
 
     public int getHealth() {
         return health;
+    }
+
+    public void setHealth(int health) {
+        this.health += health;
     }
 
     public Cell getCell() {
@@ -57,21 +54,19 @@ public abstract class Actor implements Drawable {
     }
 
     public boolean verifyValidMove(Cell cell) {
-        if (cell.getTileName().equals("wall") || cell.getActor()!=null) {
+        if (cell.getTileName().equals("wall") || cell.getActor() != null) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
 
     public boolean verifyItem(Cell cell) {
         if (cell.getItem() != null) {
-            System.out.println("Is item");
+
             return true;
-        }
-        else {
-            System.out.println("Is not item");
+        } else {
+
             return false;
         }
     }

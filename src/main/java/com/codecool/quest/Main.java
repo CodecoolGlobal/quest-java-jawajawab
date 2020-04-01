@@ -4,10 +4,12 @@ import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
@@ -25,7 +27,10 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
-    Label itemName = new Label();
+    Label attackLabel = new Label();
+//    TableView inventoryDisplayTable = new TableView();
+    ListView<String> inventoryItems = new ListView<>();
+   static Label itemName = new Label();
     static Button button = new Button();
 
     public static void main(String[] args) {
@@ -41,14 +46,42 @@ public class Main extends Application {
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
 
+        ui.add(new Label("Attack: "), 0, 1);
+        ui.add(attackLabel, 1, 1);
 
-        button.setText("Pick up Item");
+        button.setText("Pick Item");
         button.setVisible(false);
 
 
-        ui.add(button, 2, 2);
-        ui.add(itemName, 1, 2);
+        ui.add(button, 1, 3);
+        ui.add(itemName, 0, 3);
 
+        ui.add(new Label("Inventory"), 0, 6);
+
+
+//        TableColumn nameColumn = new TableColumn("Name");
+//        TableColumn countColumn = new TableColumn("Count");
+//
+//
+//        nameColumn.setReorderable(false);
+//        nameColumn.setResizable(false);
+//        nameColumn.setSortable(false);
+//
+//        countColumn.setReorderable(false);
+//        countColumn.setResizable(false);
+//        countColumn.setSortable(false);
+//
+//        inventoryDisplayTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+//        inventoryDisplayTable.getColumns().addAll(nameColumn, countColumn);
+//        inventoryDisplayTable.setEditable(false);
+//        Label tablePlaceholder = new Label("Inventory is empty");
+//        inventoryDisplayTable.setPlaceholder(tablePlaceholder);
+//
+
+        String css= "-fx-border-width: 2px; -fx-border-color: lightgrey; -fx-border-radius: 3px; -fx-max-width: 95px;";
+        inventoryItems.setStyle(css);
+
+        ui.add(inventoryItems, 0,20);
 
         BorderPane borderPane = new BorderPane();
 
@@ -62,8 +95,14 @@ public class Main extends Application {
         borderPane.requestFocus();
         button.setOnMouseClicked(e -> {
             handlePickup();
+            refresh();
             borderPane.requestFocus();
             System.out.println("Merge");
+        });
+
+        inventoryItems.setOnMouseClicked(e -> {
+            inventoryItems.getSelectionModel().clearSelection();
+            borderPane.requestFocus();
         });
         primaryStage.setTitle("Codecool Quest");
         primaryStage.show();
@@ -76,7 +115,6 @@ public class Main extends Application {
                 refresh();
                 break;
             case DOWN:
-                System.out.println("Pressed down");
                 map.getPlayer().move(0, 1);
                 refresh();
                 break;
@@ -105,26 +143,47 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
+
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
-        itemName.setText(map.getPlayer().getCell().getTileName());
+        attackLabel.setText(""+ map.getPlayer().getAttackDamage());
+        inventoryItems.getSelectionModel().clearSelection();
+
 
     }
 
 
     public static void buttonVis() {
-        System.out.println("Button is " + button.isFocused());
+        String item = map.getPlayer().getCell().getItem().getTileName();
+        itemName.setText(item);
         button.setVisible(true);
-        System.out.println("Button is " + button.isFocused());
     }
 
     public static void buttonDisappear() {
         button.setVisible(false);
+        itemName.setText("");
     }
 
     public void handlePickup() {
         itemName.setText("");
+        String item = map.getPlayer().getCell().getItem().getTileName();
+        switch(item) {
+            case "heart":
+                map.getPlayer().setHealth(5);
+                break;
+            case "sword":
+                map.getPlayer().setAttackDamage(4);
+                break;
+            default:
+                break;
+        }
+        map.getPlayer().addToPlayerInventory(item, 1);
+
         map.getPlayer().getCell().setItem(null);
+        System.out.println(map.getPlayer().printPlayerInventory());
+        inventoryItems.setItems(map.getPlayer().printPlayerInventory());
+
+        inventoryItems.getSelectionModel().clearSelection();
         buttonDisappear();
     }
 
