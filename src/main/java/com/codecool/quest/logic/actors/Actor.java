@@ -28,6 +28,12 @@ public abstract class Actor implements Drawable {
                     nextCell.setItem(null);
                 }
             }
+            if (nextCell.getItem()!=null && nextCell.getItem().getTileName().equals("blueDoor")) {
+                if (Player.openBlueDoor()) {
+                    nextCell.setType(CellType.OPENBLUEDOOR);
+                    nextCell.setItem(null);
+                }
+            }
             else {
                 Main.encounter(this.getCell(), nextCell);
             }
@@ -61,7 +67,9 @@ public abstract class Actor implements Drawable {
     }
 
     public static boolean verifyValidMove(Cell cell) {
-        if (cell.getTileName().equals("wall") || cell.getActor() != null || (cell.getItem()!=null && cell.getItem().getTileName().equals("door"))) {
+        if (cell.getTileName().equals("wall") || cell.getActor() != null
+                || (cell.getItem()!=null && cell.getItem().getTileName().equals("door"))
+                || (cell.getItem()!=null && cell.getItem().getTileName().equals("blueDoor"))) {
             return false;
         } else {
             return true;

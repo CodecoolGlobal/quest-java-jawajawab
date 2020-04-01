@@ -34,7 +34,10 @@ public class Tiles {
         tileMap.put("sword", new Tile(4, 30));
         tileMap.put("heart", new Tile(26, 22));
         tileMap.put("doorKey", new Tile(16, 23));
+        tileMap.put("blueDoorKey", new Tile(17, 23));
         tileMap.put("door", new Tile(13, 11));
+        tileMap.put("blueDoor", new Tile(1, 9));
+        tileMap.put("openBlueDoor", new Tile(2, 9));
         tileMap.put("opendoor", new Tile(12, 11));
         tileMap.put("grave", new Tile(1, 14));
         tileMap.put("charG", new Tile(25, 30));

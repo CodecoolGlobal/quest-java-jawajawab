@@ -67,6 +67,11 @@ public class Player extends Actor {
         else return false;
     }
 
+    public static boolean openBlueDoor() {
+        if (playerInventory.containsKey("blueDoorKey")) return true;
+        else return false;
+    }
+
 }
 
 

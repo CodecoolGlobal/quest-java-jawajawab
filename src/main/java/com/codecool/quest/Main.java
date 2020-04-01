@@ -8,6 +8,7 @@ import com.codecool.quest.logic.actors.Ghost;
 import com.codecool.quest.logic.actors.Giant;
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
+import com.codecool.quest.logic.items.BlueDoorKey;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -177,13 +178,10 @@ public class Main extends Application {
         Player attacker = (Player) cell.getActor();
         if (nextCell.getActor().getTileName().equals("skeleton")) {
             Skeleton defender = (Skeleton) nextCell.getActor();
-            System.out.println("Encounter " + attacker.damage + " " + defender.damage);
             defender.modifyHealth(attacker.damage);
-            attacker.modifyHealth(defender.damage);
-            System.out.println("defender health: " + defender.getHealth() + " and attacker health : " + attacker.getHealth());
             if (defender.getHealth() <= 0) {
                 defender.getCell().setActor(null);
-            }
+            } else attacker.modifyHealth(defender.damage);
             if (attacker.getHealth() <= 0) {
                 attacker.getCell().setType(CellType.GRAVE);
                 attacker.getCell().setActor(null);
@@ -192,30 +190,27 @@ public class Main extends Application {
         }
         else if (nextCell.getActor().getTileName().equals("ghost")) {
             Ghost defender = (Ghost) nextCell.getActor();
-            System.out.println("Encounter " + attacker.damage + " " + defender.damage);
             defender.modifyHealth(attacker.damage);
-            attacker.modifyHealth(defender.damage);
-            System.out.println("defender health: " + defender.getHealth() + " and attacker health : " + attacker.getHealth());
             if (defender.getHealth() <= 0) {
                 defender.getCell().setActor(null);
-            }
+            } else attacker.modifyHealth(defender.damage);
             if (attacker.getHealth() <= 0) {
                 attacker.getCell().setType(CellType.GRAVE);
                 attacker.getCell().setActor(null);
+                displayGameOver();
             }
         }
         else if (nextCell.getActor().getTileName().equals("giant")) {
             Giant defender = (Giant) nextCell.getActor();
-            System.out.println("Encounter " + attacker.damage + " " + defender.damage);
             defender.modifyHealth(attacker.damage);
-            attacker.modifyHealth(defender.damage);
-            System.out.println("defender health: " + defender.getHealth() + " and attacker health : " + attacker.getHealth());
             if (defender.getHealth() <= 0) {
                 defender.getCell().setActor(null);
-            }
+                map.setBlueDoorKey(new BlueDoorKey(defender.getCell()));
+            } else attacker.modifyHealth(defender.damage);
             if (attacker.getHealth() <= 0) {
                 attacker.getCell().setType(CellType.GRAVE);
                 attacker.getCell().setActor(null);
+                displayGameOver();
             }
         }
     }
