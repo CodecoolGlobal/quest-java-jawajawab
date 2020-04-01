@@ -4,12 +4,15 @@ import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -26,6 +29,7 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label attackLabel = new Label();
+    TableView inventoryDisplayTable = new TableView();
    static Label itemName = new Label();
     static Button button = new Button();
 
@@ -52,6 +56,29 @@ public class Main extends Application {
         ui.add(button, 1, 3);
         ui.add(itemName, 0, 3);
 
+        ui.add(new Label("Inventory"), 0, 6);
+
+
+        TableColumn nameColumn = new TableColumn("Name");
+        TableColumn countColumn = new TableColumn("Count");
+
+
+        nameColumn.setReorderable(false);
+        nameColumn.setResizable(false);
+        nameColumn.setSortable(false);
+
+        countColumn.setReorderable(false);
+        countColumn.setResizable(false);
+        countColumn.setSortable(false);
+
+        inventoryDisplayTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        inventoryDisplayTable.getColumns().addAll(nameColumn, countColumn);
+        inventoryDisplayTable.setEditable(false);
+        Label tablePlaceholder = new Label("Inventory is empty");
+        inventoryDisplayTable.setPlaceholder(tablePlaceholder);
+
+
+        ui.add(inventoryDisplayTable, 0,8);
 
         BorderPane borderPane = new BorderPane();
 
@@ -69,6 +96,9 @@ public class Main extends Application {
             borderPane.requestFocus();
             System.out.println("Merge");
         });
+        inventoryDisplayTable.setOnMouseClicked(  e -> {
+            borderPane.requestFocus();
+        });
         primaryStage.setTitle("Codecool Quest");
         primaryStage.show();
     }
@@ -80,7 +110,6 @@ public class Main extends Application {
                 refresh();
                 break;
             case DOWN:
-                System.out.println("Pressed down");
                 map.getPlayer().move(0, 1);
                 refresh();
                 break;
@@ -109,6 +138,7 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
+
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
         attackLabel.setText(""+ map.getPlayer().getAttackDamage());
@@ -118,11 +148,9 @@ public class Main extends Application {
 
 
     public static void buttonVis() {
-        System.out.println("Button is " + button.isFocused());
         String item = map.getPlayer().getCell().getItem().getTileName();
         itemName.setText(item);
         button.setVisible(true);
-        System.out.println("Button is " + button.isFocused());
     }
 
     public static void buttonDisappear() {
@@ -143,7 +171,9 @@ public class Main extends Application {
             default:
                 break;
         }
+        map.getPlayer().addToPlayerInventory(item, 1);
         map.getPlayer().getCell().setItem(null);
+        System.out.println(map.getPlayer().printPlayerInventory());
         buttonDisappear();
     }
 
