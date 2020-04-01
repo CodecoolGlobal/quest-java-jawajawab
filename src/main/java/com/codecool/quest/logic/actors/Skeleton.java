@@ -11,8 +11,6 @@ public class Skeleton extends Actor {
 
     }
 
-
-
     @Override
     public String getTileName() {
         return "skeleton";
@@ -26,5 +24,19 @@ public class Skeleton extends Actor {
     public int getHealth() {
         return health;
     }
+
+    public void roam() {
+        System.out.println("tttttererererere");
+//        Cell cell = this.getCell();
+//        int dx = getX()+1;
+//        int dy = getY()+1;
+//        Cell nextCell = cell.getNeighbor(dx, dy);
+//        if (verifyValidMove(nextCell)) {
+//            cell.setActor(null);
+//            nextCell.setActor(this);
+////            cell = nextCell;
+//        }
+    }
+
 
 }

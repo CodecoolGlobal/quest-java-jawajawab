@@ -41,7 +41,7 @@ public class Main extends Application {
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
-
+//        ui.setGridLinesVisible(true);
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
 
@@ -51,16 +51,15 @@ public class Main extends Application {
         button.setText("Pick Item");
         button.setVisible(false);
 
-
         ui.add(button, 1, 3);
         ui.add(itemName, 0, 3);
 
-        ui.add(new Label("Inventory"), 0, 6);
+        ui.add(new Label("Inv"), 0, 6);
 
-        String css= "-fx-border-width: 2px; -fx-border-color: lightgrey; -fx-border-radius: 3px; -fx-max-width: 95px;";
+        String css= "-fx-border-width: 2px; -fx-border-color: lightgrey; -fx-border-radius: 3px; -fx-max-width: 100px;";
         inventoryItems.setStyle(css);
 
-        ui.add(inventoryItems, 0,20);
+        ui.add(inventoryItems, 0,20, 2, 1);
 
         BorderPane borderPane = new BorderPane();
 
@@ -85,6 +84,7 @@ public class Main extends Application {
         });
         primaryStage.setTitle("Codecool Quest");
         primaryStage.show();
+
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
@@ -115,6 +115,9 @@ public class Main extends Application {
             for (int y = 0; y < map.getHeight(); y++) {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
+                    if (cell.getActor().getTileName().equals("skeleton")) {
+                        ((Skeleton) cell.getActor()).roam();
+                    }
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
@@ -122,12 +125,11 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
-
         }
 
         healthLabel.setText("" + map.getPlayer().health);
 //        itemName.setText(map.getPlayer().getCell().getTileName());
-//         attackLabel.setText(""+ map.getPlayer().getAttackDamage());
+        attackLabel.setText(""+ map.getPlayer().damage);
         inventoryItems.getSelectionModel().clearSelection();
 
 
@@ -150,10 +152,12 @@ public class Main extends Application {
         String item = map.getPlayer().getCell().getItem().getTileName();
         switch(item) {
             case "heart":
-                map.getPlayer().setHealth(5);
+                map.getPlayer().modifyHealth(-10);
+                healthLabel.setText("" + map.getPlayer().health);
                 break;
             case "sword":
-//                map.getPlayer().setAttackDamage(4);
+                map.getPlayer().modifyDamage(4);
+                attackLabel.setText(""+ map.getPlayer().damage);
                 break;
             default:
                 break;
@@ -177,5 +181,6 @@ public class Main extends Application {
             defender.getCell().setActor(null);
         }
     }
+
 
 }

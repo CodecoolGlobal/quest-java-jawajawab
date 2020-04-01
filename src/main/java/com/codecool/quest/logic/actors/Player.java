@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 public class Player extends Actor {
-    public int damage = 5;
+    public int damage = 1;
     public int health = 10;
     public Cell cell;
     private static LinkedHashMap<String, Integer> playerInventory = new LinkedHashMap<>();
@@ -30,7 +30,10 @@ public class Player extends Actor {
 
     public void modifyHealth(int modifier) {
         this.health -= modifier;
-        System.out.println(this.health);
+    }
+
+    public void modifyDamage(int modifier) {
+        this.damage += modifier;
     }
 
     public int getHealth() {
