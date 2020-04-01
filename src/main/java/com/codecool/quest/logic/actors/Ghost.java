@@ -2,18 +2,19 @@ package com.codecool.quest.logic.actors;
 
 import com.codecool.quest.logic.Cell;
 
-public class Skeleton extends Actor {
-    public int damage = 2;
+public class Ghost extends Actor {
+    public int damage = 3;
     public int health = 10;
 
-    public Skeleton(Cell cell) {
+
+    public Ghost(Cell cell) {
         super(cell);
 
     }
 
     @Override
     public String getTileName() {
-        return "skeleton";
+        return "ghost";
     }
 
     public void modifyHealth(int modifier) {
@@ -25,5 +26,10 @@ public class Skeleton extends Actor {
         return health;
     }
 
+    public void roam() {
+        System.out.println("ghost roaming");
+    }
+
 
 }
+

@@ -1,11 +1,10 @@
 package com.codecool.quest.logic;
 
+import com.codecool.quest.logic.actors.Ghost;
+import com.codecool.quest.logic.actors.Giant;
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
-import com.codecool.quest.logic.items.Door;
-import com.codecool.quest.logic.items.DoorKey;
-import com.codecool.quest.logic.items.Heart;
-import com.codecool.quest.logic.items.Sword;
+import com.codecool.quest.logic.items.*;
 
 public class GameMap {
     private int width;
@@ -14,10 +13,14 @@ public class GameMap {
 
     private Player player;
     private Skeleton skeleton;
+    private Ghost ghost;
+    private Giant giant;
     private Sword sword;
     private Heart heart;
     private DoorKey doorKey;
     private Door door;
+    private BlueDoor blueDoor;
+    private BlueDoorKey blueDoorKey;
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -42,6 +45,14 @@ public class GameMap {
         this.skeleton = skeleton;
     }
 
+    public void setGhost(Ghost ghost) {
+        this.ghost = ghost;
+    }
+
+    public void setGiant(Giant giant) {
+        this.giant = giant;
+    }
+
     public void setSword(Sword sword) {
         this.sword = sword;
     }
@@ -56,6 +67,14 @@ public class GameMap {
 
     public void setDoor(Door door) {
         this.door = door;
+    }
+
+    public void setBlueDoor(BlueDoor blueDoor) {
+        this.blueDoor = blueDoor;
+    }
+
+    public void setBlueDoorKey(BlueDoorKey blueDoorKey) {
+        this.blueDoorKey = blueDoorKey;
     }
 
     public Player getPlayer() {

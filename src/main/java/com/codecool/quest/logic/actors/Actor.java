@@ -28,8 +28,15 @@ public abstract class Actor implements Drawable {
                     nextCell.setItem(null);
                 }
             }
+            else if (nextCell.getItem()!=null && nextCell.getItem().getTileName().equals("blueDoor")) {
+                if (Player.openBlueDoor()) {
+                    nextCell.setType(CellType.OPENBLUEDOOR);
+                    nextCell.setItem(null);
+                    Main.displayStageClear();
+                }
+            }
             else {
-                Main.encounter((Player) this.getCell().getActor(), (Skeleton) nextCell.getActor());
+                Main.encounter(this.getCell(), nextCell);
             }
         }
         if (verifyItem(cell)) {
@@ -60,8 +67,10 @@ public abstract class Actor implements Drawable {
         return cell.getY();
     }
 
-    public boolean verifyValidMove(Cell cell) {
-        if (cell.getTileName().equals("wall") || cell.getActor() != null || (cell.getItem()!=null && cell.getItem().getTileName().equals("door"))) {
+    public static boolean verifyValidMove(Cell cell) {
+        if (cell.getTileName().equals("wall") || cell.getActor() != null
+                || (cell.getItem()!=null && cell.getItem().getTileName().equals("door"))
+                || (cell.getItem()!=null && cell.getItem().getTileName().equals("blueDoor"))) {
             return false;
         } else {
             return true;
