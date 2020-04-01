@@ -1,6 +1,7 @@
 package com.codecool.quest;
 
 import com.codecool.quest.logic.Cell;
+import com.codecool.quest.logic.CellType;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
 import com.codecool.quest.logic.actors.Ghost;
@@ -183,6 +184,11 @@ public class Main extends Application {
             if (defender.getHealth() <= 0) {
                 defender.getCell().setActor(null);
             }
+            if (attacker.getHealth() <= 0) {
+                attacker.getCell().setType(CellType.GRAVE);
+                attacker.getCell().setActor(null);
+                displayGameOver();
+            }
         }
         else if (nextCell.getActor().getTileName().equals("ghost")) {
             Ghost defender = (Ghost) nextCell.getActor();
@@ -192,6 +198,10 @@ public class Main extends Application {
             System.out.println("defender health: " + defender.getHealth() + " and attacker health : " + attacker.getHealth());
             if (defender.getHealth() <= 0) {
                 defender.getCell().setActor(null);
+            }
+            if (attacker.getHealth() <= 0) {
+                attacker.getCell().setType(CellType.GRAVE);
+                attacker.getCell().setActor(null);
             }
         }
         else if (nextCell.getActor().getTileName().equals("giant")) {
@@ -203,8 +213,29 @@ public class Main extends Application {
             if (defender.getHealth() <= 0) {
                 defender.getCell().setActor(null);
             }
+            if (attacker.getHealth() <= 0) {
+                attacker.getCell().setType(CellType.GRAVE);
+                attacker.getCell().setActor(null);
+            }
         }
     }
 
-
+    public static void displayGameOver() {
+        Cell cell = map.getCell(12, 10);
+        cell.setType(CellType.CHARG);
+        cell = map.getCell(13, 10);
+        cell.setType(CellType.CHARA);
+        cell = map.getCell(14, 10);
+        cell.setType(CellType.CHARM);
+        cell = map.getCell(15, 10);
+        cell.setType(CellType.CHARE);
+        cell = map.getCell(12, 11);
+        cell.setType(CellType.CHARO);
+        cell = map.getCell(13, 11);
+        cell.setType(CellType.CHARV);
+        cell = map.getCell(14, 11);
+        cell.setType(CellType.CHARE);
+        cell = map.getCell(15, 11);
+        cell.setType(CellType.CHARR);
+    }
 }

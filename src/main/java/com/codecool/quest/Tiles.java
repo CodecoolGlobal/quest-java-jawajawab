@@ -36,6 +36,14 @@ public class Tiles {
         tileMap.put("doorKey", new Tile(16, 23));
         tileMap.put("door", new Tile(13, 11));
         tileMap.put("opendoor", new Tile(12, 11));
+        tileMap.put("grave", new Tile(1, 14));
+        tileMap.put("charG", new Tile(25, 30));
+        tileMap.put("charA", new Tile(19, 30));
+        tileMap.put("charM", new Tile(31, 30));
+        tileMap.put("charE", new Tile(23, 30));
+        tileMap.put("charO", new Tile(20, 31));
+        tileMap.put("charV", new Tile(27, 31));
+        tileMap.put("charR", new Tile(23, 31));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
