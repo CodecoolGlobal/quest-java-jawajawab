@@ -25,7 +25,7 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
-    Label itemName = new Label();
+   static Label itemName = new Label();
     static Button button = new Button();
 
     public static void main(String[] args) {
@@ -46,8 +46,8 @@ public class Main extends Application {
         button.setVisible(false);
 
 
-        ui.add(button, 2, 2);
-        ui.add(itemName, 1, 2);
+        ui.add(button, 1, 2);
+        ui.add(itemName, 0, 2);
 
 
         BorderPane borderPane = new BorderPane();
@@ -107,19 +107,21 @@ public class Main extends Application {
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
-        itemName.setText(map.getPlayer().getCell().getTileName());
+
 
     }
 
 
     public static void buttonVis() {
         System.out.println("Button is " + button.isFocused());
+        itemName.setText(map.getPlayer().getCell().getItem().getTileName());
         button.setVisible(true);
         System.out.println("Button is " + button.isFocused());
     }
 
     public static void buttonDisappear() {
         button.setVisible(false);
+        itemName.setText("");
     }
 
     public void handlePickup() {
