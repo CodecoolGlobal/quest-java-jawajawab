@@ -47,7 +47,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         playerName = ProfileWindow.displayProfile("Start your Adventure", "Welcome adventurer, please state your name!");
-        cheatingBastard();
+        cheat();
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
@@ -340,7 +340,7 @@ public class Main extends Application {
         }
     }
 
-    public void cheatingBastard() {
+    public void cheat() {
         if (playerName.equals("Dan")) {
             map.getPlayer().modifyHealth(-9989);
         } else if(playerName.equals("Stefan")) {

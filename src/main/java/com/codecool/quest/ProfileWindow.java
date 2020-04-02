@@ -22,7 +22,7 @@ public class ProfileWindow {
         label.setText(windowMessage);
 
 
-        TextField name = new TextField("Yu Suk Kok");
+        TextField name = new TextField("John");
         Button button = new Button("Start!");
 
         button.setOnAction(e -> {
