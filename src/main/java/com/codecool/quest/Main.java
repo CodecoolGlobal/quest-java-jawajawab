@@ -36,6 +36,8 @@ public class Main extends Application {
     ListView<String> inventoryItems = new ListView<>();
     static Label itemName = new Label();
     static Button button = new Button();
+    String playerHealthValue = "";
+    String playerAttackValue = "";
 
     public static void main(String[] args) {
         launch(args);
@@ -47,11 +49,14 @@ public class Main extends Application {
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
 //        ui.setGridLinesVisible(true);
-        ui.add(new Label("Health: "), 0, 0);
-        ui.add(healthLabel, 1, 0);
+        playerHealthValue = Integer.toString(map.getPlayer().health);
+        playerAttackValue = Integer.toString(map.getPlayer().damage);
 
-        ui.add(new Label("Attack: "), 0, 1);
-        ui.add(attackLabel, 1, 1);
+        healthLabel= new Label("Health: " + playerHealthValue );
+        ui.add(healthLabel, 0, 0);
+
+      attackLabel =  new Label("Attack: " + playerAttackValue);
+      ui.add(attackLabel, 0, 1);
 
         button.setText("Pick Item");
         button.setVisible(false);
@@ -59,7 +64,7 @@ public class Main extends Application {
         ui.add(button, 1, 3);
         ui.add(itemName, 0, 3);
 
-        ui.add(new Label("Inv"), 0, 6);
+        ui.add(new Label("Inventory"), 0, 6);
 
         String css= "-fx-border-width: 2px; -fx-border-color: lightgrey; -fx-border-radius: 3px; -fx-max-width: 100px;";
         inventoryItems.setStyle(css);
@@ -81,6 +86,7 @@ public class Main extends Application {
             refresh();
             borderPane.requestFocus();
             System.out.println("Merge");
+
         });
 
         inventoryItems.setOnMouseClicked(e -> {
@@ -137,11 +143,12 @@ public class Main extends Application {
                 }
             }
         }
-        healthLabel.setText("" + map.getPlayer().health);
+        playerHealthValue = Integer.toString(map.getPlayer().health);
 //        itemName.setText(map.getPlayer().getCell().getTileName());
-        attackLabel.setText(""+ map.getPlayer().damage);
+        playerAttackValue = Integer.toString(map.getPlayer().damage);
         inventoryItems.getSelectionModel().clearSelection();
-
+        healthLabel.setText("Health: "+playerHealthValue);
+        attackLabel.setText("Attack: "+playerAttackValue);
 
     }
 
@@ -155,6 +162,7 @@ public class Main extends Application {
     public static void buttonDisappear() {
         button.setVisible(false);
         itemName.setText("");
+
     }
 
     public void handlePickup() {
@@ -163,11 +171,11 @@ public class Main extends Application {
         switch(item) {
             case "heart":
                 map.getPlayer().modifyHealth(-10);
-                healthLabel.setText("" + map.getPlayer().health);
+                healthLabel.setText("Health: " + map.getPlayer().health);
                 break;
             case "sword":
                 map.getPlayer().modifyDamage(4);
-                attackLabel.setText(""+ map.getPlayer().damage);
+                attackLabel.setText("Attack: "+ map.getPlayer().damage);
                 break;
             default:
                 break;
@@ -238,6 +246,7 @@ public class Main extends Application {
         cell.setType(CellType.CHARE);
         cell = map.getCell(15, 11);
         cell.setType(CellType.CHARR);
+
     }
 
     public static void displayStageClear() {
