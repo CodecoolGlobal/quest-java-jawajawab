@@ -13,16 +13,13 @@ public class Player extends Actor {
     public Cell cell;
     private static LinkedHashMap<String, Integer> playerInventory = new LinkedHashMap<>();
 
-
     public Player(Cell cell) {
         super(cell);
-
     }
 
     public String getTileName() {
         return "player";
     }
-
 
     public int getDamage() {
         return damage;

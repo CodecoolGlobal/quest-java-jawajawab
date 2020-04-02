@@ -10,7 +10,6 @@ public class Skeleton extends Actor {
 
     public Skeleton(Cell cell) {
         super(cell);
-
     }
 
     @Override
@@ -26,6 +25,5 @@ public class Skeleton extends Actor {
     public int getHealth() {
         return health;
     }
-
 
 }

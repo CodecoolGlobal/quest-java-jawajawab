@@ -10,7 +10,6 @@ public class Ghost extends Actor {
 
     public Ghost(Cell cell) {
         super(cell);
-
     }
 
     @Override
@@ -26,11 +25,6 @@ public class Ghost extends Actor {
     public int getHealth() {
         return health;
     }
-
-    public void roam() {
-        System.out.println("ghost roaming");
-    }
-
 
 }
 

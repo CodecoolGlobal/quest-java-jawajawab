@@ -58,10 +58,10 @@ public class Main extends Application {
         healthLabel= new Label("Health: " + playerHealthValue );
         ui.add(healthLabel, 0, 1);
 
-      attackLabel =  new Label("Attack: " + playerAttackValue);
-      ui.add(attackLabel, 0, 2);
+        attackLabel =  new Label("Attack: " + playerAttackValue);
+        ui.add(attackLabel, 0, 2);
 
-        button.setText("Pick Item");
+        button.setText("Pick Up");
         button.setVisible(false);
 
         ui.add(button, 1, 4);
@@ -88,8 +88,6 @@ public class Main extends Application {
             handlePickup();
             inventoryItems.getSelectionModel().clearSelection();
             borderPane.requestFocus();
-            System.out.println("Merge");
-
         });
 
         inventoryItems.setOnMouseClicked(e -> {
@@ -99,36 +97,34 @@ public class Main extends Application {
         primaryStage.setTitle("Codecool Quest");
         primaryStage.show();
         primaryStage.setOnCloseRequest(e -> closeProgram(primaryStage));
-
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
-                moveMonster();
+                moveMonsters();
                 refresh();
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
-                moveMonster();
+                moveMonsters();
                 refresh();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
-                moveMonster();
+                moveMonsters();
                 refresh();
                 break;
             case RIGHT:
                 map.getPlayer().move(1, 0);
-                moveMonster();
+                moveMonsters();
                 refresh();
                 break;
         }
     }
 
     private void refresh() {
-
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int x = 0; x < map.getWidth(); x++) {
@@ -149,22 +145,29 @@ public class Main extends Application {
         inventoryItems.getSelectionModel().clearSelection();
         healthLabel.setText("Health: "+playerHealthValue);
         attackLabel.setText("Attack: "+playerAttackValue);
-
     }
 
-
-    public static void buttonVis() {
+    /**
+     * Displays the hidden Pick Up button when player is over an item
+     */
+    public static void showPickupButton() {
         String item = map.getPlayer().getCell().getItem().getTileName();
         itemName.setText(item);
         button.setVisible(true);
     }
 
-    public static void buttonDisappear() {
+    /**
+     * Hides the Pick Up button
+     */
+    public static void hidePickupButton() {
         button.setVisible(false);
         itemName.setText("");
-
     }
 
+    /**
+     * Handles the Pick Up action, places item in inventory and deletes
+     * it from the map
+     */
     public void handlePickup() {
         itemName.setText("");
         String item = map.getPlayer().getCell().getItem().getTileName();
@@ -182,19 +185,23 @@ public class Main extends Application {
         }
         map.getPlayer().addToPlayerInventory(item, 1);
         map.getPlayer().getCell().setItem(null);
-        System.out.println(map.getPlayer().printPlayerInventory());
         inventoryItems.setItems(map.getPlayer().printPlayerInventory());
         inventoryItems.getSelectionModel().clearSelection();
-        buttonDisappear();
+        hidePickupButton();
     }
 
+    /**
+     * Result of a move where the player moves into a monster to attack.
+     * Calculates health - damage and removes actor from map if dead.
+     * @param cell - player location
+     * @param nextCell - monster location
+     */
     public static void encounter(Cell cell, Cell nextCell) {
         Player attacker = (Player) cell.getActor();
         if (nextCell.getActor().getTileName().equals("skeleton")) {
             ((Skeleton) nextCell.getActor()).canMove = false;
             ((Skeleton) nextCell.getActor()).modifyHealth(attacker.damage);
             if (((Skeleton) nextCell.getActor()).health <= 0) {
-                ((Skeleton) nextCell.getActor()).getCell().setActor(null);
                 nextCell.setActor(null);
             } else attacker.modifyHealth(((Skeleton) nextCell.getActor()).damage);
             if (attacker.getHealth() <= 0) {
@@ -204,11 +211,11 @@ public class Main extends Application {
             }
         }
         else if (nextCell.getActor().getTileName().equals("ghost")) {
-            Ghost defender = (Ghost) nextCell.getActor();
-            defender.modifyHealth(attacker.damage);
-            if (defender.getHealth() <= 0) {
-                defender.getCell().setActor(null);
-            } else attacker.modifyHealth(defender.damage);
+            ((Ghost) nextCell.getActor()).canMove = false;
+            ((Ghost) nextCell.getActor()).modifyHealth(attacker.damage);
+            if (((Ghost) nextCell.getActor()).health <= 0) {
+                nextCell.setActor(null);
+            } else attacker.modifyHealth(((Ghost) nextCell.getActor()).damage);
             if (attacker.getHealth() <= 0) {
                 attacker.getCell().setType(CellType.GRAVE);
                 attacker.getCell().setActor(null);
@@ -230,6 +237,9 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Displays GAME OVER with graphic letters when player dies
+     */
     public static void displayGameOver() {
         Cell cell = map.getCell(12, 10);
         cell.setType(CellType.CHARG);
@@ -247,9 +257,11 @@ public class Main extends Application {
         cell.setType(CellType.CHARE);
         cell = map.getCell(15, 11);
         cell.setType(CellType.CHARR);
-
     }
 
+    /**
+     * Displays STAGE CLEAR with graphic letters when exit(blue) door is open
+     */
     public static void displayStageClear() {
         Cell cell = map.getCell(11, 10);
         cell.setType(CellType.CHARS);
@@ -273,21 +285,27 @@ public class Main extends Application {
         cell.setType(CellType.CHARR);
     }
 
-    public void moveMonster() {
+    /**
+     * Evaluates every cell and if it has an actor it starts the moving process for it
+     */
+    public void moveMonsters() {
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
-                    moveMonsters(cell, cell.getActor().getTileName());
+                    moveMonster(cell, cell.getActor().getTileName());
                 }
             }
         }
     }
 
-    public void moveMonsters(Cell cell, String monster) {
-
-
-        System.out.println("move monsters started. moving " + cell.getActor() + " from x:" + cell.getX() + " y:" + cell.getY());
+    /**
+     * Evaluates the type of monster an Actor is and moves it according to its speed
+     * The speed is moving 1 square every 7 or 5 player moves, depending on monster type
+     * @param cell
+     * @param monster
+     */
+    public void moveMonster(Cell cell, String monster) {
         List<Integer> randomChoice = new ArrayList<>();
         randomChoice.add(-1);
         randomChoice.add(0);
@@ -295,72 +313,34 @@ public class Main extends Application {
         Random r = new Random();
         int dx = randomChoice.get(r.nextInt(randomChoice.size()));
         int dy = randomChoice.get(r.nextInt(randomChoice.size()));;
-
         if (monster.equals("skeleton")) {
-
             Cell nextCell = cell.getNeighbor(dx, dy);
-            System.out.println("nextCell set to: " + nextCell.getX() + " " + nextCell.getY());
             if (Actor.verifyValidMove(nextCell)) {
-
-                System.out.println("move validated. moving " + (Skeleton) cell.getActor() + " to: x:" + nextCell.getX() + " y:" + nextCell.getY());
                 Skeleton mover = (Skeleton) cell.getActor();
                 mover.moveCounter++;
-                System.out.println("current moves " + mover.moveCounter);
                 if (mover.canMove && mover.moveCounter%7==0) {
                     cell.setActor(null);
                     nextCell.setActor(mover);
-//                    mover.moveCounter++;
                 }
             }
-
-            nextCell = cell;
-//            else if (nextCell.getActor().getTileName().equals("player")) {
-//                encounterMonsterAttacking(cell, nextCell);
-//            }
         }
         else if (monster.equals("ghost")) {
             Cell nextCell = cell.getNeighbor(dx, dy);
-            System.out.println("nextCell set to: " + nextCell.getX() + " " + nextCell.getY());
             if (Actor.verifyValidMove(nextCell)) {
-                System.out.println("move validated. moving " + (Ghost) cell.getActor() + " to: x:" + nextCell.getX() + " y:" + nextCell.getY());
                 Ghost mover = (Ghost) cell.getActor();
-                cell.setActor(null);
-                nextCell.setActor(mover);
-            }
-        }
-        else System.out.println("monster not sk or gh");
-
-    }
-
-    public void encounterMonsterAttacking(Cell cell, Cell nextCell) {
-        if (cell.getActor().getTileName().equals("skeleton")) {
-            Skeleton attacker = (Skeleton) nextCell.getActor();
-            Player defender = (Player) nextCell.getActor();
-            defender.modifyHealth(attacker.damage);
-            if (defender.getHealth() <= 0) {
-                attacker.getCell().setType(CellType.GRAVE);
-                attacker.getCell().setActor(null);
-                displayGameOver();
-            } else attacker.modifyHealth(defender.damage);
-            if (attacker.getHealth() <= 0) {
-                defender.getCell().setActor(null);
-            }
-        }
-        else if (cell.getActor().getTileName().equals("ghost")) {
-            Ghost attacker = (Ghost) nextCell.getActor();
-            Player defender = (Player) nextCell.getActor();
-            defender.modifyHealth(attacker.damage);
-            if (defender.getHealth() <= 0) {
-                attacker.getCell().setType(CellType.GRAVE);
-                attacker.getCell().setActor(null);
-                displayGameOver();
-            } else attacker.modifyHealth(defender.damage);
-            if (attacker.getHealth() <= 0) {
-                defender.getCell().setActor(null);
+                mover.moveCounter++;
+                if (mover.canMove && mover.moveCounter%5==0) {
+                    cell.setActor(null);
+                    nextCell.setActor(mover);
+                }
             }
         }
     }
 
+    /**
+     * Cheat code function - based on selected name at the start
+     * different stats are modified
+     */
     public void cheat() {
         if (playerName.trim().equals("Dan")) {
             map.getPlayer().modifyHealth(-9989);
@@ -373,6 +353,7 @@ public class Main extends Application {
             playerName = "Incognito";
         }
     }
+
     private void closeProgram(Stage stage) {
         stage.close();
         System.exit(0);

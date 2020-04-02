@@ -40,11 +40,10 @@ public abstract class Actor implements Drawable {
             }
         }
         if (verifyItem(cell)) {
-            Main.buttonVis();
+            Main.showPickupButton();
         } else {
-            Main.buttonDisappear();
+            Main.hidePickupButton();
         }
-
     }
 
     public int getHealth() {
@@ -67,6 +66,11 @@ public abstract class Actor implements Drawable {
         return cell.getY();
     }
 
+    /**
+     * Evaluates the next cell to see if it is not a wall or closed door.
+     * @param cell
+     * @return true or false
+     */
     public static boolean verifyValidMove(Cell cell) {
         if (cell.getTileName().equals("wall") || cell.getActor() != null
                 || (cell.getItem()!=null && cell.getItem().getTileName().equals("door"))
@@ -77,12 +81,15 @@ public abstract class Actor implements Drawable {
         }
     }
 
+    /**
+     * Evaluates if the player is on top of a pick-able item.
+     * @param cell
+     * @return true or false
+     */
     public boolean verifyItem(Cell cell) {
         if (cell.getItem() != null) {
-
             return true;
         } else {
-
             return false;
         }
     }
