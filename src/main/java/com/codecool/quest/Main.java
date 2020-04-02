@@ -32,7 +32,6 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label attackLabel = new Label();
-//    TableView inventoryDisplayTable = new TableView();
     ListView<String> inventoryItems = new ListView<>();
     static Label itemName = new Label();
     static Button button = new Button();
@@ -51,7 +50,6 @@ public class Main extends Application {
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
-        //ui.setGridLinesVisible(true);
         playerHealthValue = Integer.toString(map.getPlayer().health);
         playerAttackValue = Integer.toString(map.getPlayer().damage);
 
@@ -89,7 +87,6 @@ public class Main extends Application {
         button.setOnMouseClicked(e -> {
             handlePickup();
             inventoryItems.getSelectionModel().clearSelection();
-            //refresh();
             borderPane.requestFocus();
             System.out.println("Merge");
 
@@ -151,7 +148,6 @@ public class Main extends Application {
             }
         }
         playerHealthValue = Integer.toString(map.getPlayer().health);
-//        itemName.setText(map.getPlayer().getCell().getTileName());
         playerAttackValue = Integer.toString(map.getPlayer().damage);
         inventoryItems.getSelectionModel().clearSelection();
         healthLabel.setText("Health: "+playerHealthValue);
@@ -354,7 +350,6 @@ public class Main extends Application {
         }
     }
     private void closeProgram(Stage stage) {
-        System.out.println("Goodbye");
         stage.close();
         System.exit(0);
     }
