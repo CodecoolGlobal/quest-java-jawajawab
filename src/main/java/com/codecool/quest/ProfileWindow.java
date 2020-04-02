@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -24,6 +25,13 @@ public class ProfileWindow {
 
         TextField name = new TextField("John");
         Button button = new Button("Start!");
+
+        name.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                playerName = name.getText();
+                window.close();
+            }
+        });
 
         button.setOnAction(e -> {
             playerName = name.getText();

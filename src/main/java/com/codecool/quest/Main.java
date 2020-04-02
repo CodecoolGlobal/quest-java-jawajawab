@@ -101,6 +101,7 @@ public class Main extends Application {
         });
         primaryStage.setTitle("Codecool Quest");
         primaryStage.show();
+        primaryStage.setOnCloseRequest(e -> closeProgram(primaryStage));
 
     }
 
@@ -341,13 +342,20 @@ public class Main extends Application {
     }
 
     public void cheat() {
-        if (playerName.equals("Dan")) {
+        if (playerName.trim().equals("Dan")) {
             map.getPlayer().modifyHealth(-9989);
-        } else if(playerName.equals("Stefan")) {
+        } else if(playerName.trim().equals("Stefan")) {
             map.getPlayer().modifyDamage(9998);
-        } else if(playerName.equals("Jesus")) {
+        } else if(playerName.trim().equals("Jesus")) {
             map.getPlayer().modifyHealth(-9989);
             map.getPlayer().modifyDamage(9998);
+        } else if(playerName.trim().equals("")) {
+            playerName = "Incognito";
         }
+    }
+    private void closeProgram(Stage stage) {
+        System.out.println("Goodbye");
+        stage.close();
+        System.exit(0);
     }
 }
