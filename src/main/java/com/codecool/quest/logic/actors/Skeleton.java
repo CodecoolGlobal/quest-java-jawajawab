@@ -5,6 +5,8 @@ import com.codecool.quest.logic.Cell;
 public class Skeleton extends Actor {
     public int damage = 2;
     public int health = 10;
+    public int moveCounter = 0;
+    public boolean canMove = true;
 
     public Skeleton(Cell cell) {
         super(cell);
