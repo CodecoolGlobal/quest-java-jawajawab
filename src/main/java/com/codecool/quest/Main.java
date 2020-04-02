@@ -83,7 +83,8 @@ public class Main extends Application {
         borderPane.requestFocus();
         button.setOnMouseClicked(e -> {
             handlePickup();
-            refresh();
+            inventoryItems.getSelectionModel().clearSelection();
+            //refresh();
             borderPane.requestFocus();
             System.out.println("Merge");
 
