@@ -345,6 +345,9 @@ public class Main extends Application {
             map.getPlayer().modifyHealth(-9989);
         } else if(playerName.equals("Stefan")) {
             map.getPlayer().modifyDamage(9998);
+        } else if(playerName.equals("Jesus")) {
+            map.getPlayer().modifyHealth(-9989);
+            map.getPlayer().modifyDamage(9998);
         }
     }
 }
