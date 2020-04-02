@@ -11,5 +11,4 @@ public class BlueDoor extends Item {
         return "blueDoor";
     }
 
-
 }
