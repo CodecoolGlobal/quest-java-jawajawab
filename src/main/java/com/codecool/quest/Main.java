@@ -38,6 +38,7 @@ public class Main extends Application {
     static Button button = new Button();
     String playerHealthValue = "";
     String playerAttackValue = "";
+    public static String playerName;
 
     public static void main(String[] args) {
         launch(args);
@@ -45,31 +46,35 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        playerName = ProfileWindow.displayProfile("Start your Adventure", "Welcome adventurer, please state your name!");
+        cheatingBastard();
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
-//        ui.setGridLinesVisible(true);
+        //ui.setGridLinesVisible(true);
         playerHealthValue = Integer.toString(map.getPlayer().health);
         playerAttackValue = Integer.toString(map.getPlayer().damage);
 
+        ui.add(new Label("Adventurer: "+ playerName), 0,0, 3 ,1 );
+
         healthLabel= new Label("Health: " + playerHealthValue );
-        ui.add(healthLabel, 0, 0);
+        ui.add(healthLabel, 0, 1);
 
       attackLabel =  new Label("Attack: " + playerAttackValue);
-      ui.add(attackLabel, 0, 1);
+      ui.add(attackLabel, 0, 2);
 
         button.setText("Pick Item");
         button.setVisible(false);
 
-        ui.add(button, 1, 3);
-        ui.add(itemName, 0, 3);
+        ui.add(button, 1, 4);
+        ui.add(itemName, 0, 4);
 
-        ui.add(new Label("Inventory"), 0, 6);
+        ui.add(new Label("Inventory"), 0, 7);
 
         String css= "-fx-border-width: 2px; -fx-border-color: lightgrey; -fx-border-radius: 3px; -fx-max-width: 100px;";
         inventoryItems.setStyle(css);
 
-        ui.add(inventoryItems, 0,20, 2, 1);
+        ui.add(inventoryItems, 0,20, 3, 1);
 
         BorderPane borderPane = new BorderPane();
 
@@ -335,5 +340,11 @@ public class Main extends Application {
         }
     }
 
-
+    public void cheatingBastard() {
+        if (playerName.equals("Dan")) {
+            map.getPlayer().setHealth(9999);
+        } else if(playerName.equals("Stefan")) {
+            map.getPlayer().modifyDamage(9998);
+        }
+    }
 }

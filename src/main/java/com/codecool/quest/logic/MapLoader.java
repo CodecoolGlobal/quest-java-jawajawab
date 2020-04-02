@@ -1,5 +1,6 @@
 package com.codecool.quest.logic;
 
+import com.codecool.quest.Main;
 import com.codecool.quest.logic.actors.Ghost;
 import com.codecool.quest.logic.actors.Giant;
 import com.codecool.quest.logic.actors.Player;
@@ -52,6 +53,11 @@ public class MapLoader {
                         case '@':
                             cell.setType(CellType.FLOOR);
                             map.setPlayer(new Player(cell));
+//                            if (Main.playerName.equals("Dan")) {
+//                                map.getPlayer().setHealth(99999);
+//                            } else if(Main.playerName.equals("Stefan")) {
+//                                map.getPlayer().modifyDamage(99999);
+//                            }
                             break;
                         case '/':
                             System.out.println("read sword");
