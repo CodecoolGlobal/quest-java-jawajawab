@@ -342,7 +342,7 @@ public class Main extends Application {
 
     public void cheatingBastard() {
         if (playerName.equals("Dan")) {
-            map.getPlayer().setHealth(9999);
+            map.getPlayer().modifyHealth(-9989);
         } else if(playerName.equals("Stefan")) {
             map.getPlayer().modifyDamage(9998);
         }
