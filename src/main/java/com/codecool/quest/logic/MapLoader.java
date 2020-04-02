@@ -1,7 +1,10 @@
 package com.codecool.quest.logic;
 
+import com.codecool.quest.logic.actors.Ghost;
+import com.codecool.quest.logic.actors.Giant;
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
+import com.codecool.quest.logic.items.*;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -31,13 +34,49 @@ public class MapLoader {
                         case '.':
                             cell.setType(CellType.FLOOR);
                             break;
+                        case 'D':
+                            cell.setType(CellType.OPENDOOR);
+                            break;
                         case 's':
                             cell.setType(CellType.FLOOR);
                             map.setSkeleton(new Skeleton(cell));
                             break;
+                        case 'g':
+                            cell.setType(CellType.FLOOR);
+                            map.setGhost(new Ghost(cell));
+                            break;
+                        case 'G':
+                            cell.setType(CellType.FLOOR);
+                            map.setGiant(new Giant(cell));
+                            break;
                         case '@':
                             cell.setType(CellType.FLOOR);
                             map.setPlayer(new Player(cell));
+                            break;
+                        case '/':
+                            System.out.println("read sword");
+                            cell.setType(CellType.FLOOR);
+                            map.setSword(new Sword(cell));
+                            break;
+                        case 'h':
+                            System.out.println("read heart");
+                            cell.setType(CellType.FLOOR);
+                            map.setHeart(new Heart(cell));
+                            break;
+                        case '%':
+                            System.out.println("read doorKey");
+                            cell.setType(CellType.FLOOR);
+                            map.setDoorKey(new DoorKey(cell));
+                            break;
+                        case 'd':
+                            System.out.println("read door");
+                            cell.setType(CellType.FLOOR);
+                            map.setDoor(new Door(cell));
+                            break;
+                        case 'B':
+                            System.out.println("read blueDoor");
+                            cell.setType(CellType.FLOOR);
+                            map.setBlueDoor(new BlueDoor(cell));
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
