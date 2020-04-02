@@ -194,7 +194,6 @@ public class Main extends Application {
             ((Skeleton) nextCell.getActor()).canMove = false;
             ((Skeleton) nextCell.getActor()).modifyHealth(attacker.damage);
             if (((Skeleton) nextCell.getActor()).health <= 0) {
-                ((Skeleton) nextCell.getActor()).getCell().setActor(null);
                 nextCell.setActor(null);
             } else attacker.modifyHealth(((Skeleton) nextCell.getActor()).damage);
             if (attacker.getHealth() <= 0) {
@@ -204,11 +203,11 @@ public class Main extends Application {
             }
         }
         else if (nextCell.getActor().getTileName().equals("ghost")) {
-            Ghost defender = (Ghost) nextCell.getActor();
-            defender.modifyHealth(attacker.damage);
-            if (defender.getHealth() <= 0) {
-                defender.getCell().setActor(null);
-            } else attacker.modifyHealth(defender.damage);
+            ((Ghost) nextCell.getActor()).canMove = false;
+            ((Ghost) nextCell.getActor()).modifyHealth(attacker.damage);
+            if (((Ghost) nextCell.getActor()).health <= 0) {
+                nextCell.setActor(null);
+            } else attacker.modifyHealth(((Ghost) nextCell.getActor()).damage);
             if (attacker.getHealth() <= 0) {
                 attacker.getCell().setType(CellType.GRAVE);
                 attacker.getCell().setActor(null);
@@ -285,8 +284,6 @@ public class Main extends Application {
     }
 
     public void moveMonsters(Cell cell, String monster) {
-
-
         System.out.println("move monsters started. moving " + cell.getActor() + " from x:" + cell.getX() + " y:" + cell.getY());
         List<Integer> randomChoice = new ArrayList<>();
         randomChoice.add(-1);
@@ -295,13 +292,10 @@ public class Main extends Application {
         Random r = new Random();
         int dx = randomChoice.get(r.nextInt(randomChoice.size()));
         int dy = randomChoice.get(r.nextInt(randomChoice.size()));;
-
         if (monster.equals("skeleton")) {
-
             Cell nextCell = cell.getNeighbor(dx, dy);
             System.out.println("nextCell set to: " + nextCell.getX() + " " + nextCell.getY());
             if (Actor.verifyValidMove(nextCell)) {
-
                 System.out.println("move validated. moving " + (Skeleton) cell.getActor() + " to: x:" + nextCell.getX() + " y:" + nextCell.getY());
                 Skeleton mover = (Skeleton) cell.getActor();
                 mover.moveCounter++;
@@ -309,14 +303,8 @@ public class Main extends Application {
                 if (mover.canMove && mover.moveCounter%7==0) {
                     cell.setActor(null);
                     nextCell.setActor(mover);
-//                    mover.moveCounter++;
                 }
             }
-
-            nextCell = cell;
-//            else if (nextCell.getActor().getTileName().equals("player")) {
-//                encounterMonsterAttacking(cell, nextCell);
-//            }
         }
         else if (monster.equals("ghost")) {
             Cell nextCell = cell.getNeighbor(dx, dy);
@@ -324,41 +312,16 @@ public class Main extends Application {
             if (Actor.verifyValidMove(nextCell)) {
                 System.out.println("move validated. moving " + (Ghost) cell.getActor() + " to: x:" + nextCell.getX() + " y:" + nextCell.getY());
                 Ghost mover = (Ghost) cell.getActor();
-                cell.setActor(null);
-                nextCell.setActor(mover);
+                mover.moveCounter++;
+                System.out.println("current moves " + mover.moveCounter);
+                if (mover.canMove && mover.moveCounter%5==0) {
+                    cell.setActor(null);
+                    nextCell.setActor(mover);
+                }
             }
         }
         else System.out.println("monster not sk or gh");
 
-    }
-
-    public void encounterMonsterAttacking(Cell cell, Cell nextCell) {
-        if (cell.getActor().getTileName().equals("skeleton")) {
-            Skeleton attacker = (Skeleton) nextCell.getActor();
-            Player defender = (Player) nextCell.getActor();
-            defender.modifyHealth(attacker.damage);
-            if (defender.getHealth() <= 0) {
-                attacker.getCell().setType(CellType.GRAVE);
-                attacker.getCell().setActor(null);
-                displayGameOver();
-            } else attacker.modifyHealth(defender.damage);
-            if (attacker.getHealth() <= 0) {
-                defender.getCell().setActor(null);
-            }
-        }
-        else if (cell.getActor().getTileName().equals("ghost")) {
-            Ghost attacker = (Ghost) nextCell.getActor();
-            Player defender = (Player) nextCell.getActor();
-            defender.modifyHealth(attacker.damage);
-            if (defender.getHealth() <= 0) {
-                attacker.getCell().setType(CellType.GRAVE);
-                attacker.getCell().setActor(null);
-                displayGameOver();
-            } else attacker.modifyHealth(defender.damage);
-            if (attacker.getHealth() <= 0) {
-                defender.getCell().setActor(null);
-            }
-        }
     }
 
     public void cheat() {
