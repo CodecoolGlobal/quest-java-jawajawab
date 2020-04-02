@@ -28,13 +28,13 @@ public class ProfileWindow {
 
         name.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
-                playerName = name.getText();
+                playerName = name.getText().trim();
                 window.close();
             }
         });
 
         button.setOnAction(e -> {
-            playerName = name.getText();
+            playerName = name.getText().trim();
             window.close();
         });
 
